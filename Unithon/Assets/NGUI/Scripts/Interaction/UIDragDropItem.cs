@@ -5,7 +5,6 @@
 
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 /// <summary>
 /// UIDragDropItem is a base script for your own Drag & Drop operations.
@@ -64,32 +63,19 @@ public class UIDragDropItem : MonoBehaviour
 	[System.NonSerialized] protected UICamera.MouseOrTouch mTouch;
 
 	/// <summary>
-	/// List of items that are currently being dragged.
+	/// Cache the transform.
 	/// </summary>
 
-	static public List<UIDragDropItem> draggedItems = new List<UIDragDropItem>();
-
-	protected virtual void Awake ()
+	protected virtual void Start ()
 	{
 		mTrans = transform;
-#if UNITY_4_3 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7
+#if UNITY_4_3 || UNITY_4_5 || UNITY_4_6
 		mCollider = collider;
 		mCollider2D = collider2D;
 #else
 		mCollider = gameObject.GetComponent<Collider>();
 		mCollider2D = gameObject.GetComponent<Collider2D>();
 #endif
-	}
-
-	protected virtual void OnEnable () { }
-	protected virtual void OnDisable () { if (mDragging) StopDragging(UICamera.hoveredObject); }
-
-	/// <summary>
-	/// Cache the transform.
-	/// </summary>
-
-	protected virtual void Start ()
-	{
 		mButton = GetComponent<UIButton>();
 		mDragScrollView = GetComponent<UIDragScrollView>();
 	}
@@ -100,18 +86,15 @@ public class UIDragDropItem : MonoBehaviour
 
 	protected virtual void OnPress (bool isPressed)
 	{
-		if (!interactable || UICamera.currentTouchID == -2 || UICamera.currentTouchID == -3) return;
+		if (!interactable) return;
 
 		if (isPressed)
 		{
-			if (!mPressed)
-			{
-				mTouch = UICamera.currentTouch;
-				mDragStartTime = RealTime.time + pressAndHoldDelay;
-				mPressed = true;
-			}
+			mTouch = UICamera.currentTouch;
+			mDragStartTime = RealTime.time + pressAndHoldDelay;
+			mPressed = true;
 		}
-		else if (mPressed && mTouch == UICamera.currentTouch)
+		else
 		{
 			mPressed = false;
 			mTouch = null;
@@ -166,7 +149,7 @@ public class UIDragDropItem : MonoBehaviour
 	/// Start the dragging operation.
 	/// </summary>
 
-	public virtual void StartDragging ()
+	protected virtual void StartDragging ()
 	{
 		if (!interactable) return;
 
@@ -196,7 +179,6 @@ public class UIDragDropItem : MonoBehaviour
 				item.mPressed = true;
 				item.mDragging = true;
 				item.Start();
-				item.OnClone(gameObject);
 				item.OnDragDropStart();
 
 				if (UICamera.currentTouch == null)
@@ -214,12 +196,6 @@ public class UIDragDropItem : MonoBehaviour
 			}
 		}
 	}
-
-	/// <summary>
-	/// Called on the cloned object when it was duplicated.
-	/// </summary>
-
-	protected virtual void OnClone (GameObject original) { }
 
 	/// <summary>
 	/// Perform the dragging.
@@ -264,9 +240,6 @@ public class UIDragDropItem : MonoBehaviour
 
 	protected virtual void OnDragDropStart ()
 	{
-		if (!draggedItems.Contains(this))
-			draggedItems.Add(this);
-
 		// Automatically disable the scroll view
 		if (mDragScrollView != null) mDragScrollView.enabled = false;
 
@@ -348,34 +321,34 @@ public class UIDragDropItem : MonoBehaviour
 
 			// Re-enable the drag scroll view script
 			if (mDragScrollView != null)
-				Invoke("EnableDragScrollView", 0.001f);
+				StartCoroutine(EnableDragScrollView());
 
 			// Notify the widgets that the parent has changed
 			NGUITools.MarkParentAsChanged(gameObject);
 
 			if (mTable != null) mTable.repositionNow = true;
 			if (mGrid != null) mGrid.repositionNow = true;
+
+			// We're now done
+			OnDragDropEnd();
 		}
 		else NGUITools.Destroy(gameObject);
-
-		// We're now done
-		OnDragDropEnd();
 	}
 
 	/// <summary>
 	/// Function called when the object gets reparented after the drop operation finishes.
 	/// </summary>
 
-	protected virtual void OnDragDropEnd () { draggedItems.Remove(this); }
+	protected virtual void OnDragDropEnd () { }
 
 	/// <summary>
 	/// Re-enable the drag scroll view script at the end of the frame.
 	/// Reason: http://www.tasharen.com/forum/index.php?topic=10203.0
 	/// </summary>
 
-	protected void EnableDragScrollView ()
+	protected IEnumerator EnableDragScrollView ()
 	{
-		if (mDragScrollView != null)
-			mDragScrollView.enabled = true;
+		yield return new WaitForEndOfFrame();
+		if (mDragScrollView != null) mDragScrollView.enabled = true;
 	}
 }

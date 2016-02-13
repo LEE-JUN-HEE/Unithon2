@@ -70,10 +70,10 @@ public class UISpriteAnimation : MonoBehaviour
 	{
 		if (mActive && mSpriteNames.Count > 1 && Application.isPlaying && mFPS > 0)
 		{
-			mDelta += Mathf.Min(1f, RealTime.deltaTime);
+			mDelta += RealTime.deltaTime;
 			float rate = 1f / mFPS;
 
-			while (rate < mDelta)
+			if (rate < mDelta)
 			{
 				mDelta = (rate > 0f) ? mDelta - rate : 0f;
 

@@ -88,7 +88,7 @@ public class UIButton : UIButtonColor
 		get
 		{
 			if (!enabled) return false;
-#if UNITY_4_3 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7
+#if UNITY_4_3 || UNITY_4_5 || UNITY_4_6
 			Collider col = collider;
 #else
 			Collider col = gameObject.GetComponent<Collider>();
@@ -101,7 +101,7 @@ public class UIButton : UIButtonColor
 		{
 			if (isEnabled != value)
 			{
-#if UNITY_4_3 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7
+#if UNITY_4_3 || UNITY_4_5 || UNITY_4_6
 				Collider col = collider;
 #else
 				Collider col = gameObject.GetComponent<Collider>();
@@ -211,7 +211,18 @@ public class UIButton : UIButtonColor
 #endif
 		if (isEnabled)
 		{
-			if (mInitDone) OnHover(UICamera.hoveredObject == gameObject);
+			if (mInitDone)
+			{
+				if (UICamera.currentScheme == UICamera.ControlScheme.Controller)
+				{
+					OnHover(UICamera.selectedObject == gameObject);
+				}
+				else if (UICamera.currentScheme == UICamera.ControlScheme.Mouse)
+				{
+					OnHover(UICamera.hoveredObject == gameObject);
+				}
+				else SetState(State.Normal, false);
+			}
 		}
 		else SetState(State.Disabled, true);
 	}

@@ -16,8 +16,8 @@ public class UIShowControlScheme : MonoBehaviour
 	public bool touch = false;
 	public bool controller = true;
 
-	void OnEnable () { UICamera.onSchemeChange += OnScheme; OnScheme(); }
-	void OnDisable () { UICamera.onSchemeChange -= OnScheme; }
+	//void OnEnable () { UICamera.onSchemeChange += OnScheme; OnScheme(); }
+	//void OnDisable () { UICamera.onSchemeChange -= OnScheme; }
 
 	void OnScheme ()
 	{

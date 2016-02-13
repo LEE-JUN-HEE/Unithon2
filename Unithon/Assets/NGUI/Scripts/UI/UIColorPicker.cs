@@ -98,7 +98,7 @@ public class UIColorPicker : MonoBehaviour
 
 	void Sample ()
 	{
-		Vector3 pos = UICamera.lastEventPosition;
+		Vector3 pos = UICamera.lastTouchPosition;
 		pos = mCam.cachedCamera.ScreenToWorldPoint(pos);
 
 		pos = mTrans.InverseTransformPoint(pos);

@@ -46,9 +46,6 @@ public abstract class UIBasicSprite : UIWidget
 	[HideInInspector][SerializeField] protected float mFillAmount = 1.0f;
 	[HideInInspector][SerializeField] protected bool mInvert = false;
 	[HideInInspector][SerializeField] protected Flip mFlip = Flip.Nothing;
-	[HideInInspector][SerializeField] protected bool mApplyGradient = false;
-	[HideInInspector][SerializeField] protected Color mGradientTop = Color.white;
-	[HideInInspector][SerializeField] protected Color mGradientBottom = new Color(0.7f, 0.7f, 0.7f);
 
 	// Cached to avoid allocations
 	[System.NonSerialized] Rect mInnerUV = new Rect();
@@ -287,7 +284,7 @@ public abstract class UIBasicSprite : UIWidget
 	/// Final widget's color passed to the draw buffer.
 	/// </summary>
 
-	protected Color32 drawingColor
+	Color32 drawingColor
 	{
 		get
 		{
@@ -300,7 +297,6 @@ public abstract class UIBasicSprite : UIWidget
 				colF.r = Mathf.GammaToLinearSpace(colF.r);
 				colF.g = Mathf.GammaToLinearSpace(colF.g);
 				colF.b = Mathf.GammaToLinearSpace(colF.b);
-				colF.a = Mathf.GammaToLinearSpace(colF.a);
 			}
 			return colF;
 		}
@@ -347,6 +343,7 @@ public abstract class UIBasicSprite : UIWidget
 	{
 		Vector4 v = drawingDimensions;
 		Vector4 u = drawingUVs;
+		Color32 c = drawingColor;
 
 		verts.Add(new Vector3(v.x, v.y));
 		verts.Add(new Vector3(v.x, v.w));
@@ -358,21 +355,10 @@ public abstract class UIBasicSprite : UIWidget
 		uvs.Add(new Vector2(u.z, u.w));
 		uvs.Add(new Vector2(u.z, u.y));
 
-		if (!mApplyGradient)
-		{
-			Color32 c = drawingColor;
-			cols.Add(c);
-			cols.Add(c);
-			cols.Add(c);
-			cols.Add(c);
-		}
-		else
-		{
-			AddVertexColours(cols, 1, 1);
-			AddVertexColours(cols, 1, 2);
-			AddVertexColours(cols, 2, 2);
-			AddVertexColours(cols, 2, 1);
-		}
+		cols.Add(c);
+		cols.Add(c);
+		cols.Add(c);
+		cols.Add(c);
 	}
 
 	/// <summary>
@@ -459,39 +445,11 @@ public abstract class UIBasicSprite : UIWidget
 				uvs.Add(new Vector2(mTempUVs[x2].x, mTempUVs[y2].y));
 				uvs.Add(new Vector2(mTempUVs[x2].x, mTempUVs[y].y));
 
-				if (!mApplyGradient)
-				{
-					cols.Add(c);
-					cols.Add(c);
-					cols.Add(c);
-					cols.Add(c);
-				}
-				else
-				{
-					AddVertexColours(cols, x, y);
-					AddVertexColours(cols, x, y2);
-					AddVertexColours(cols, x2, y2);
-					AddVertexColours(cols, x2, y);
-				}
+				cols.Add(c);
+				cols.Add(c);
+				cols.Add(c);
+				cols.Add(c);
 			}
-		}
-	}
-	
-	/// <summary>
-	/// Adds a gradient-based vertex color to the sprite.
-	/// </summary>
-
-	[System.Diagnostics.DebuggerHidden]
-	[System.Diagnostics.DebuggerStepThrough]
-	void AddVertexColours (BetterList<Color32> cols, int x, int y)
-	{
-		if (y == 0 || y == 1)
-		{
-			cols.Add((Color32)(drawingColor * mGradientBottom));
-		}
-		else if (y == 2 || y == 3)
-		{
-			cols.Add((Color32)(drawingColor * mGradientTop));
 		}
 	}
 
