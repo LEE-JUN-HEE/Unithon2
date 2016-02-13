@@ -8,7 +8,7 @@ public class Line : MonoBehaviour {
 
 	void Update () 
     {
-        transform.LookAt(target);
-        linewidget.width = (int)(target.localPosition - transform.localPosition).magnitude;
+        //transform.LookAt(target);
+        //linewidget.width = (int)(target.localPosition - transform.localPosition).magnitude;
 	}
 }

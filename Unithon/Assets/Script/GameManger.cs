@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
-public class GameManger : MonoBehaviour {
+public class GameManger : MonoBehaviour
+{
     static public GameManger Instance;
 
     public enum Color
@@ -22,11 +23,16 @@ public class GameManger : MonoBehaviour {
     public float score = 0;
     public bool gameOver = false;
     public float mapoffset = 0;
+    public float meteoOffset = 0;
+    public int meteoCnt;
     public int maploopcnt = 0;
     public int blockper = 0;
     public List<MapBuilder> maplist = new List<MapBuilder>();
 
     //UI
+    public List<UITexture> BGlist = new List<UITexture>();
+    public float BGoffset = 0;
+    public int BGloopcnt = 0;
     public UILabel lb_score;
     public GameObject GO_Pause;
     public GameObject GO_PauseBtn;
@@ -69,15 +75,15 @@ public class GameManger : MonoBehaviour {
 
     public void CheckMapLoop(float localy)
     {
-        if ((int)(localy / 1000) > maploopcnt)
+        if ((int)(localy / mapoffset) > maploopcnt)
         {
-            int loop = (int)(localy / 1000) - maploopcnt;
+            int loop = (int)(localy / mapoffset) - maploopcnt;
 
             for (int i = 0; i < loop; i++)
             {
                 maplist[maploopcnt % maplist.Count].transform.localPosition
                        += new Vector3(0, mapoffset * maplist.Count, 0);
-                int percent = blockper - (maploopcnt / 3) <= 15 ? 15 : blockper - (maploopcnt / 3);
+                int percent = blockper - (maploopcnt / 2) <= 15 ? 15 : blockper - (maploopcnt / 2);
 
                 maplist[maploopcnt % maplist.Count].SetData(percent);
                 maploopcnt++;
@@ -85,9 +91,28 @@ public class GameManger : MonoBehaviour {
         }
     }
 
+    public void CheckMeteo(float localy)
+    {
+        if ((int)(localy / meteoOffset) > meteoCnt)
+        {
+
+            meteoCnt++;
+        }
+    }
+
+    public void CheckBGLoop(float localy)
+    {
+        if ((int)(localy / BGoffset) > BGloopcnt)
+        {
+            BGlist[BGloopcnt % BGlist.Count].transform.localPosition
+                   += new Vector3(0, BGoffset * BGlist.Count, 0);
+            BGloopcnt++;
+        }
+    }
+
     public void UpdateUI()
     {
-        lb_score.text = string.Format("{0:0.0}",score);
+        lb_score.text = string.Format("{0:0.0}", score);
     }
 
     public void OnClick_Pause()
