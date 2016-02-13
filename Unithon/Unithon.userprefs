@@ -1,0 +1,19 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Script\ExitHowToScript.cs">
+    <Files>
+      <File FileName="Assets\Script\ExitHowToScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\HowToBtnScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\StartMenuScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\MenuPanelScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\NGUI\Scripts\Interaction\LanguageSelection.cs" Line="1" Column="1" />
+      <File FileName="Assets\NGUI\Scripts\Interaction\UIToggledObjects.cs" Line="1" Column="1" />
+      <File FileName="Assets\Script\Line.cs" Line="1" Column="1" />
+      <File FileName="Assets\NGUI\Scripts\Internal\UIWidget.cs" Line="1098" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ExitHowToScript : MonoBehaviour {
 
-    UISprite _sprite;
+    //UISprite _sprite;
     public GameObject delete;
     public GameObject startBtn;
     public GameObject howToBtn;
@@ -11,8 +11,8 @@ public class ExitHowToScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-        _sprite = GetComponent<UISprite>();
-        
+        //_sprite = GetComponent<UISprite>();
+		delete.SetActive(true);
     }
 	
 	// Update is called once per frame

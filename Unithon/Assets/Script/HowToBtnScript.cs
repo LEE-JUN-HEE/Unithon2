@@ -9,7 +9,7 @@ public class HowToBtnScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        _sprite = GetComponent<UISprite>();
+        //_sprite = GetComponent<UISprite>();
 	
 	}
 	
@@ -21,14 +21,14 @@ public class HowToBtnScript : MonoBehaviour {
     public void OnClick_storyBtn()
     {
         Debug.Log("story버튼 클릭");
-        _sprite.color = new Color(Random.value, Random.value, Random.value);
+        //_sprite.color = new Color(Random.value, Random.value, Random.value);
         
     }
 
     public void OnClick_manualBtn()
     {
         Debug.Log("manual버튼 클릭");
-        _sprite.color = new Color(Random.value, Random.value, Random.value);
+        //_sprite.color = new Color(Random.value, Random.value, Random.value);
 
     }
 }

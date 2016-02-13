@@ -42,7 +42,7 @@ public class StartMenuScript : MonoBehaviour
     //start버튼 눌렀을 때
     public void OnClick_start()
     {
-        _sprite.color = new Color(Random.value, Random.value, Random.value);
+        //_sprite.color = new Color(Random.value, Random.value, Random.value);
 
         if (gameObject.activeInHierarchy)
             isStarted = true;
@@ -52,7 +52,7 @@ public class StartMenuScript : MonoBehaviour
     //HowTo버튼 눌렀을 때
     public void OnClick_howto()
     {
-        _sprite.color = new Color(Random.value, Random.value, Random.value);
+        //_sprite.color = new Color(Random.value, Random.value, Random.value);
         howto.SetActive(true);
         startBtn.SetActive(false);
         howtoBtn.SetActive(false);
