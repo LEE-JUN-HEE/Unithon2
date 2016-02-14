@@ -83,6 +83,7 @@ public class Player : MonoBehaviour
         else
         {
             ispull = false;
+            GetComponent<AudioSource>().Play();
             lastPos = transform.localPosition;
 
             if (lastPos.y >= firstPos.y) return;
