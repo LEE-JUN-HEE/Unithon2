@@ -24,17 +24,14 @@ public class CameraFollow : MonoBehaviour {
     {
         if (!isdamp) return; 
 
-        Mathf.SmoothDamp(tr.position.y, target.position.y, ref velocity, 0.01f);        
-        tr.localPosition += new Vector3(0, velocity, 0);
+        Mathf.SmoothDamp(tr.position.y, target.position.y, ref velocity, 0.1f);        
+        tr.localPosition += new Vector3(0, velocity * 3, 0);
 
         if (velocity <= 0.5f)
         {
             isdamp = false; 
             tr.position = new Vector3(0, target.position.y, 0);
             initPos = target.position;
-            //이게뭐야 ㅡㅡ
-            GameManger.Instance.player.gameObject.SetActive(false);
-            GameManger.Instance.player.gameObject.SetActive(true);
         }
     }
 }

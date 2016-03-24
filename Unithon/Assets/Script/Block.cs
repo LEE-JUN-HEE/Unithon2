@@ -5,6 +5,7 @@ public class Block : MonoBehaviour
 {
     public UISprite sp_Aura = null;
     public UISprite sp_Planet = null;
+    public GameManger.Color color;
     public bool ison = false;
 
     float rotateSpd = 1;
@@ -20,7 +21,8 @@ public class Block : MonoBehaviour
 
     public void SetColor(int code)
     {
-        switch ((GameManger.Color)code)
+        color = (GameManger.Color)code;
+        switch (color)
         {
             case GameManger.Color.Blue:
                 sp_Aura.color = new Color(4f/255f, 175f/255f, 1f, 1f);

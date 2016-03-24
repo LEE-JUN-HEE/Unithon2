@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class StartMenuScript : MonoBehaviour
@@ -19,7 +18,6 @@ public class StartMenuScript : MonoBehaviour
         _sprite = GetComponent<UISprite>();
         howto.SetActive(false);
         _panel.alpha = 1f;
-
     }
 	
 	// Update is called once per frame
@@ -33,7 +31,7 @@ public class StartMenuScript : MonoBehaviour
             //적당히 투명해지면 Ingame으로 씬 넘김
             if (_panel.alpha <= 0.05f)
             {
-                SceneManager.LoadScene("Ingame");
+                Application.LoadLevel("Ingame");
                 isStarted = false;
             }
         }

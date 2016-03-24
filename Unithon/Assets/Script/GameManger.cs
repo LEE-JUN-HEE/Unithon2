@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 
 public class GameManger : MonoBehaviour
 {
@@ -27,6 +26,7 @@ public class GameManger : MonoBehaviour
     public int meteoCnt;
     public int maploopcnt = 0;
     public int blockper = 0;
+    public Block curOnBlock = null;
     public List<MapBuilder> maplist = new List<MapBuilder>();
 
     //UI
@@ -49,13 +49,10 @@ public class GameManger : MonoBehaviour
 
     public void GameOver()
     {
+        player.GetComponent<Collider2D>().enabled = false;
         gameOver = true;
         lb_gameoverScore.text = string.Format("{0:0.0}", score);
         GO_GameOver.SetActive(true);
-
-        //이게뭐야 ㅡㅡ
-        GO_GameOverBtn.SetActive(false);
-        GO_GameOverBtn.SetActive(true);
     }
 
     public bool CheckPlayerOnBlock()
@@ -66,11 +63,20 @@ public class GameManger : MonoBehaviour
             {
                 if (maplist[i].blocklist[j].ison)
                 {
+                    curOnBlock = maplist[i].blocklist[j];
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    public bool CheckColor()
+    {
+        if (curOnBlock == null) 
+            return false;
+
+        return player.color == curOnBlock.color;
     }
 
     public void CheckMapLoop(float localy)
@@ -113,6 +119,10 @@ public class GameManger : MonoBehaviour
     public void UpdateUI()
     {
         lb_score.text = string.Format("{0:0.0}", score);
+        if (CheckColor())
+        {
+            lb_score.GetComponent<UIPlayTween>().Play(true);
+        }
     }
 
     public void OnClick_Pause()
@@ -132,7 +142,6 @@ public class GameManger : MonoBehaviour
 
     public void OnClick_Exit()
     {
-        Debug.Log("Click Exit");
-        SceneManager.LoadScene("Start");
+        Application.LoadLevel("Start");
     }
 }

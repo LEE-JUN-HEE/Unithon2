@@ -29,7 +29,8 @@ public class Player : MonoBehaviour
     void SetColor()
     {
         System.Random r = new System.Random();
-        switch ((GameManger.Color)r.Next(0, 4))
+        color = (GameManger.Color)r.Next(0, 4);
+        switch (color)
         {
             case GameManger.Color.Blue:
                 sp_Player.color = new Color(4f / 255f, 175f / 255f, 1f, 1f);
@@ -53,6 +54,17 @@ public class Player : MonoBehaviour
             ismove = (rigid.velocity.magnitude != 0);
             if (rigid.velocity.magnitude <= 0.6f)
                 Fire.SetActive(false);
+
+            //화면 밖에 나갔는지 판단
+            Vector2 viewport = GameManger.Instance.follow.GetComponent<Camera>().WorldToViewportPoint(transform.position);
+            if (viewport.x < 0)
+            {
+                rigid.velocity = new Vector2(Mathf.Abs(rigid.velocity.x), rigid.velocity.y);
+            }
+            else if (viewport.x > 1)
+            {
+                rigid.velocity = new Vector2(-Mathf.Abs(rigid.velocity.x), rigid.velocity.y);
+            }
 
             if (!ismove)
             {
@@ -99,7 +111,7 @@ public class Player : MonoBehaviour
             //Arrow.gameObject.SetActive(false);
             //Arrow.transform.rotation = Quaternion.identity;
             Fire.SetActive(true);
-            Fire.transform.Rotate(0, 0, (lastPos - firstPos).x);
+            Fire.transform.TransformDirection((firstPos - lastPos).x, (firstPos - lastPos).y, 0);
             Line1.SetActive(false);
             Line2.SetActive(false);
         }
@@ -124,28 +136,20 @@ public class Player : MonoBehaviour
         lastPos = transform.localPosition;
 
         Direction = (firstPos - lastPos).normalized;
-        //Arrow.transform.LookAt(Direction);
-        //Arrow.height = (int)(firstPos - lastPos).magnitude;
     }
 
     void CheckAfterStop()
     {
         Fire.transform.rotation = Quaternion.identity;
-        //화면 밖에 나갔는지 판단
-        Vector2 viewport = GameManger.Instance.follow.GetComponent<Camera>().WorldToViewportPoint(transform.position);
-        if (viewport.x < 0 || viewport.x > 1)
-        {
-            GameManger.Instance.GameOver();
-            return;
-        }
+        
 
         //발판 위에 있는지 판단
         if (!GameManger.Instance.CheckPlayerOnBlock())
         {
-            //발판과 색깔이 겹치는지 판단
             GameManger.Instance.GameOver();
             return;
         }
+        //발판과 색깔이 겹치는지 판단
 
         //맵 루프 여부 판단
         GameManger.Instance.CheckMapLoop(transform.localPosition.y);
@@ -159,6 +163,10 @@ public class Player : MonoBehaviour
         Arrow.transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y);
 
         //스코어 적립
+        if (GameManger.Instance.CheckColor())
+        {
+            GameManger.Instance.score += transform.localPosition.y - firstPos.y;
+        }
         GameManger.Instance.score += transform.localPosition.y - firstPos.y;
         GameManger.Instance.UpdateUI();
 
