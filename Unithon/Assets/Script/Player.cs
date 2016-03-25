@@ -165,9 +165,9 @@ public class Player : MonoBehaviour
         //스코어 적립
         if (GameManger.Instance.CheckColor())
         {
-            GameManger.Instance.score += transform.localPosition.y - firstPos.y;
+            GameManger.Instance.score += (long)(transform.localPosition.y - firstPos.y);
         }
-        GameManger.Instance.score += transform.localPosition.y - firstPos.y;
+        GameManger.Instance.score += (long)(transform.localPosition.y - firstPos.y);
         GameManger.Instance.UpdateUI();
 
         GameManger.Instance.follow.Damp();

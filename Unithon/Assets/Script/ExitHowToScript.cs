@@ -6,6 +6,7 @@ public class ExitHowToScript : MonoBehaviour {
     //UISprite _sprite;
     public GameObject delete;
     public GameObject startBtn;
+    public GameObject RankBtn;
     public GameObject howToBtn;
 
 	// Use this for initialization
@@ -24,6 +25,7 @@ public class ExitHowToScript : MonoBehaviour {
     {
         delete.SetActive(false);
         startBtn.SetActive(true);
+        RankBtn.SetActive(true);
         howToBtn.SetActive(true);
     }
 

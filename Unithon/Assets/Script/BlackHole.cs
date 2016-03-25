@@ -10,12 +10,13 @@ public class BlackHole : MonoBehaviour
     {
         if (GameManger.Instance.gameOver) return;
         transform.Translate(0, velocity * Time.fixedDeltaTime * 0.05f, 0);
-        velocity = (GameManger.Instance.player.transform.localPosition.y - transform.localPosition.y) * 0.1f > 300
-            ? (GameManger.Instance.player.transform.localPosition.y - transform.localPosition.y) * 0.1f : 2;
+        //velocity = (GameManger.Instance.player.transform.localPosition.y - transform.localPosition.y) * 0.1f > 300
+        //    ? (GameManger.Instance.player.transform.localPosition.y - transform.localPosition.y) * 0.1f : 3;
 	}
 
     void OnTriggerEnter2D(Collider2D col)
     {
+        Debug.Log("Coll" + col.tag);
         if (col.tag == "Player")
         {
             if (col.GetComponent<Player>().iscontrol) return;

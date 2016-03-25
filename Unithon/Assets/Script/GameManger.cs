@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using GooglePlayGames;
+using UnityEngine.SocialPlatforms;
 
 public class GameManger : MonoBehaviour
 {
@@ -19,7 +21,7 @@ public class GameManger : MonoBehaviour
     public Player player;
 
     //Logic
-    public float score = 0;
+    public long score = 0;
     public bool gameOver = false;
     public float mapoffset = 0;
     public float meteoOffset = 0;
@@ -40,6 +42,7 @@ public class GameManger : MonoBehaviour
     public GameObject GO_GameOverBtn;
     public UILabel lb_gameoverScore;
 
+
     void Awake()
     {
         Instance = this;
@@ -47,11 +50,20 @@ public class GameManger : MonoBehaviour
         maplist.ForEach(x => x.SetData(blockper));
     }
 
+    void Start()
+    {
+    }
+
     public void GameOver()
     {
         player.GetComponent<Collider2D>().enabled = false;
         gameOver = true;
-        lb_gameoverScore.text = string.Format("{0:0.0}", score);
+        lb_gameoverScore.text = string.Format("{0:0}", score);
+
+        Social.ReportScore(score, "CgkIyOj9mbIBEAIQAA", (bool success) =>
+        {
+
+        });
         GO_GameOver.SetActive(true);
     }
 
@@ -73,7 +85,7 @@ public class GameManger : MonoBehaviour
 
     public bool CheckColor()
     {
-        if (curOnBlock == null) 
+        if (curOnBlock == null)
             return false;
 
         return player.color == curOnBlock.color;
@@ -89,7 +101,7 @@ public class GameManger : MonoBehaviour
             {
                 maplist[maploopcnt % maplist.Count].transform.localPosition
                        += new Vector3(0, mapoffset * maplist.Count, 0);
-                int percent = blockper - (maploopcnt / 2) <= 15 ? 15 : blockper - (maploopcnt / 2);
+                int percent = blockper - (maploopcnt) <= 10 ? 10 : blockper - (maploopcnt);
 
                 maplist[maploopcnt % maplist.Count].SetData(percent);
                 maploopcnt++;
@@ -143,5 +155,10 @@ public class GameManger : MonoBehaviour
     public void OnClick_Exit()
     {
         Application.LoadLevel("Start");
+    }
+
+    public void OnClick_Retry()
+    {
+        Application.LoadLevel("Ingame");
     }
 }

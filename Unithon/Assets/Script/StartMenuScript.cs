@@ -5,6 +5,7 @@ public class StartMenuScript : MonoBehaviour
 {
     public GameObject howto;
     public GameObject startBtn;
+    public GameObject RankBtn;
     public GameObject howtoBtn;
     public UIPanel _panel;
     UISprite _sprite;
@@ -18,7 +19,6 @@ public class StartMenuScript : MonoBehaviour
         _panel.alpha = 1f;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (isStarted == true)
@@ -38,8 +38,6 @@ public class StartMenuScript : MonoBehaviour
     //start버튼 눌렀을 때
     public void OnClick_start()
     {
-        //_sprite.color = new Color(Random.value, Random.value, Random.value);
-
         if (gameObject.activeInHierarchy)
             isStarted = true;
 
@@ -48,9 +46,9 @@ public class StartMenuScript : MonoBehaviour
     //HowTo버튼 눌렀을 때
     public void OnClick_howto()
     {
-        //_sprite.color = new Color(Random.value, Random.value, Random.value);
         howto.SetActive(true);
         startBtn.SetActive(false);
         howtoBtn.SetActive(false);
+        RankBtn.SetActive(false);
     }
 }
